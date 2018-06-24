@@ -1,0 +1,70 @@
+tigereye package
+================
+
+Submodules
+----------
+
+tigereye.error module
+---------------------
+
+.. automodule:: tigereye.error
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tigereye.load module
+--------------------
+
+.. automodule:: tigereye.load
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tigereye.parse module
+---------------------
+
+.. automodule:: tigereye.parse
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tigereye.plot module
+--------------------
+
+.. automodule:: tigereye.plot
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tigereye.tigereye module
+------------------------
+
+.. automodule:: tigereye.tigereye
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tigereye.util module
+--------------------
+
+.. automodule:: tigereye.util
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tigereye.var module
+-------------------
+
+.. automodule:: tigereye.var
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: tigereye
+    :members:
+    :undoc-members:
+    :show-inheritance:

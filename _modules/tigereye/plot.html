@@ -1,0 +1,436 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tigereye.plot &mdash; tigereye 0.1.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> tigereye
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../uguide.html">User's guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dguide.html">Developer's guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tigereye</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tigereye.plot</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tigereye.plot</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;tigereye plotting module.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span>
+    <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">.error</span> <span class="k">import</span> <span class="n">UsageError</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="p">(</span><span class="n">error_exit</span><span class="p">,</span> <span class="n">teye_eval</span><span class="p">,</span> <span class="n">teye_exec</span><span class="p">,</span> <span class="n">temp_attrs</span><span class="p">,</span>
+    <span class="n">parse_funcargs</span><span class="p">)</span>
+
+<span class="n">_re_ax_colon</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?P&lt;ax&gt;ax\d*)\s*:\s*(?P&lt;others&gt;.*)&#39;</span><span class="p">)</span>
+<span class="n">_re_ax_equal</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?P&lt;ax&gt;ax\d*)\s*=\s*(?P&lt;others&gt;.*)&#39;</span><span class="p">)</span>
+<span class="n">_re_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?P&lt;name&gt;\w+)\s*,?\s*(?P&lt;others&gt;.*)&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_get_axis</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">):</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">delimiter</span> <span class="o">==</span> <span class="s1">&#39;:&#39;</span><span class="p">:</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">_re_ax_colon</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">delimiter</span> <span class="o">==</span> <span class="s1">&#39;=&#39;</span><span class="p">:</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">_re_ax_equal</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;ax&#39;</span><span class="p">),</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;others&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;ax&#39;</span><span class="p">,</span> <span class="n">arg</span>
+
+<span class="k">def</span> <span class="nf">_get_name</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+
+    <span class="n">match</span> <span class="o">=</span> <span class="n">_re_name</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;others&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">arg</span>
+
+<div class="viewcode-block" id="gen_plot"><a class="viewcode-back" href="../../tigereye.html#tigereye.plot.gen_plot">[docs]</a><span class="k">def</span> <span class="nf">gen_plot</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+
+    <span class="c1"># plotting</span>
+    <span class="n">plots</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">plot</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">plot</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">plot</span><span class="p">:</span>
+
+            <span class="n">ax</span><span class="p">,</span> <span class="n">plotarg</span> <span class="o">=</span> <span class="n">_get_axis</span><span class="p">(</span><span class="n">plot</span><span class="p">)</span>
+
+            <span class="n">poscomma</span> <span class="o">=</span> <span class="n">plotarg</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">poscomma</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">UsageError</span><span class="p">(</span><span class="s1">&#39;Wrong plot option: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">plotarg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pname</span> <span class="o">=</span> <span class="n">plotarg</span><span class="p">[:</span><span class="n">poscomma</span><span class="p">]</span>
+                <span class="n">pargs</span> <span class="o">=</span> <span class="n">plotarg</span><span class="p">[</span><span class="n">poscomma</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="n">plot_handle</span> <span class="o">=</span> <span class="n">teye_eval</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">(</span><span class="si">%s</span><span class="s1">)&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">pname</span><span class="p">,</span> <span class="n">pargs</span><span class="p">),</span> <span class="n">g</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">plot_handle</span><span class="p">:</span>
+                        <span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                    <span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plot_handle</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">pname</span> <span class="o">==</span> <span class="s1">&#39;pie&#39;</span><span class="p">:</span>
+                    <span class="n">attrs</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+
+    <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;plots&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">plots</span></div>
+
+<div class="viewcode-block" id="axes_main_functions"><a class="viewcode-back" href="../../tigereye.html#tigereye.plot.axes_main_functions">[docs]</a><span class="k">def</span> <span class="nf">axes_main_functions</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+
+    <span class="c1">#import inspect</span>
+
+    <span class="c1"># title setting</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">title</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">title_arg</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">title</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="n">_get_axis</span><span class="p">(</span><span class="n">title_arg</span><span class="p">)</span>
+            <span class="n">teye_eval</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.set_title(</span><span class="si">%s</span><span class="s1">)&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">title</span><span class="p">),</span> <span class="n">g</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">xaxis</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">xaxis_arg</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">xaxis</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">,</span> <span class="n">xaxis</span> <span class="o">=</span> <span class="n">_get_axis</span><span class="p">(</span><span class="n">xaxis_arg</span><span class="p">)</span>
+
+            <span class="n">set_xfuncs</span> <span class="o">=</span>  <span class="nb">dict</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">attrs</span><span class="p">[</span><span class="n">ax</span><span class="p">],</span> <span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">attrs</span><span class="p">[</span><span class="n">ax</span><span class="p">])</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;set_x&#39;</span><span class="p">))</span>
+            <span class="n">vargs</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">parse_funcargs</span><span class="p">(</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">set_xfuncs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">funckey</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span> <span class="c1"># set_x functions</span>
+                <span class="k">if</span> <span class="n">funckey</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                    <span class="n">func_args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">func_args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">funckey</span><span class="p">)</span>
+                    <span class="n">func</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">func_args</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">yaxis</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">yaxis_arg</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">yaxis</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">_get_axis</span><span class="p">(</span><span class="n">yaxis_arg</span><span class="p">)</span>
+
+            <span class="n">set_yfuncs</span> <span class="o">=</span>  <span class="nb">dict</span><span class="p">((</span><span class="n">y</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">attrs</span><span class="p">[</span><span class="n">ax</span><span class="p">],</span> <span class="n">y</span><span class="p">))</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">attrs</span><span class="p">[</span><span class="n">ax</span><span class="p">])</span> <span class="k">if</span> <span class="n">y</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;set_y&#39;</span><span class="p">))</span>
+            <span class="n">vargs</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">parse_funcargs</span><span class="p">(</span><span class="n">yaxis</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">set_yfuncs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">funckey</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
+                <span class="k">if</span> <span class="n">funckey</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                    <span class="n">func_args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">func_args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">funckey</span><span class="p">)</span>
+                    <span class="n">func</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">func_args</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">zaxis</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># grid setting</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">g</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span><span class="o">==</span><span class="s1">&#39;ax&#39;</span> <span class="ow">or</span> <span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;ax&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">grid</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">grid_arg</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">grid</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">grid_arg</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">,</span> <span class="n">grid</span> <span class="o">=</span> <span class="n">_get_axis</span><span class="p">(</span><span class="n">grid_arg</span><span class="p">)</span>
+                <span class="n">teye_eval</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.grid(</span><span class="si">%s</span><span class="s1">)&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">grid</span><span class="p">),</span> <span class="n">g</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+
+    <span class="c1"># legend setting </span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">l</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span><span class="o">==</span><span class="s1">&#39;ax&#39;</span> <span class="ow">or</span> <span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;ax&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">legend</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">legend_arg</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">legend</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">legend_arg</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">,</span> <span class="n">legend</span> <span class="o">=</span> <span class="n">_get_axis</span><span class="p">(</span><span class="n">legend_arg</span><span class="p">)</span>
+                <span class="n">teye_eval</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.legend(</span><span class="si">%s</span><span class="s1">)&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">legend</span><span class="p">),</span> <span class="n">g</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="teye_plot"><a class="viewcode-back" href="../../tigereye.html#tigereye.plot.teye_plot">[docs]</a><span class="k">def</span> <span class="nf">teye_plot</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+
+    <span class="c1"># matplotlib settings</span>
+    <span class="c1"># pages setting</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
+        <span class="n">vargs</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">parse_funcargs</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pages</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">vargs</span><span class="p">:</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;num_pages&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vargs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;num_pages&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;pdf_merge&#39;</span> <span class="ow">and</span> <span class="n">value</span><span class="p">:</span>
+                <span class="kn">from</span> <span class="nn">matplotlib.backends.backend_pdf</span> <span class="k">import</span> <span class="n">PdfPages</span>
+                <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;_pdf_merge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">PdfPages</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;num_pages&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;num_pages&#39;</span><span class="p">]):</span>
+
+        <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;page_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx</span>
+
+        <span class="c1"># figure setting</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">figure</span><span class="p">:</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;figure&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">teye_eval</span><span class="p">(</span><span class="s1">&#39;pyplot.figure(</span><span class="si">%s</span><span class="s1">)&#39;</span><span class="o">%</span><span class="n">args</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;figure&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;pyplot&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+
+
+        <span class="c1"># plot axis</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">ax</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ax_arg</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">ax</span><span class="p">:</span>
+                <span class="n">axname</span><span class="p">,</span> <span class="n">others</span> <span class="o">=</span> <span class="n">_get_axis</span><span class="p">(</span><span class="n">ax_arg</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">axname</span><span class="p">:</span>
+                    <span class="n">attrs</span><span class="p">[</span><span class="n">axname</span><span class="p">]</span> <span class="o">=</span> <span class="n">teye_eval</span><span class="p">(</span><span class="s1">&#39;figure.add_subplot(</span><span class="si">%s</span><span class="s1">)&#39;</span><span class="o">%</span><span class="n">others</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">UsageError</span><span class="p">(</span><span class="s1">&#39;Wrong axis option: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">ax_arg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;ax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;figure&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+        <span class="c1"># page names</span>
+        <span class="k">if</span> <span class="s1">&#39;page_names&#39;</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+            <span class="n">page_names</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;page_names&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">page_names</span><span class="p">):</span>
+                <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;page_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_names</span><span class="p">(</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;page_num&#39;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;page_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_names</span><span class="p">[</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;page_num&#39;</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;page_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;page</span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;page_num&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># generate plots</span>
+        <span class="n">gen_plot</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+
+        <span class="c1"># selected axes functions</span>
+        <span class="n">axes_main_functions</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+
+        <span class="c1"># execute axes functions</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">axes_arg</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">,</span> <span class="n">arg</span> <span class="o">=</span> <span class="n">_get_axis</span><span class="p">(</span><span class="n">axes_arg</span><span class="p">)</span>
+                <span class="n">axes</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">teye_eval</span><span class="p">(</span><span class="s1">&#39;ax.</span><span class="si">%s</span><span class="s1">()&#39;</span><span class="o">%</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">g</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">teye_eval</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">(</span><span class="si">%s</span><span class="s1">)&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">g</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;plots&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;_data_objects&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">data_obj</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;_data_objects&#39;</span><span class="p">]:</span>
+                    <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;ax&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data_obj</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">attrs</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">error_exit</span><span class="p">(</span><span class="s2">&quot;There is no data to plot.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># saving an image file</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">saveargs</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="p">:</span>
+                <span class="n">arglist</span> <span class="o">=</span> <span class="n">saveargs</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s1">&#39;_pdf_merge&#39;</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;_pdf_pages&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+                        <span class="n">teye_exec</span><span class="p">(</span><span class="s1">&#39;_pdf_pages = _pdf_merge(</span><span class="si">%s</span><span class="s1">)&#39;</span><span class="o">%</span><span class="n">arglist</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">g</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+                    <span class="n">teye_exec</span><span class="p">(</span><span class="s1">&#39;_pdf_pages.savefig()&#39;</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">teye_exec</span><span class="p">(</span><span class="s1">&#39;pyplot.savefig(</span><span class="si">%s</span><span class="s1">)&#39;</span><span class="o">%</span><span class="n">saveargs</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+
+        <span class="c1"># displyaing an image on screen</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">noshow</span><span class="p">:</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;pyplot&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;pyplot&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c1"># multi-page closing</span>
+    <span class="k">if</span> <span class="s1">&#39;_pdf_pages&#39;</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+        <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;_pdf_pages&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Youngsung Kim.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.2',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

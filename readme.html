@@ -1,0 +1,393 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tigereye &mdash; tigereye 0.1.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="Welcome to tigereye’s documentation!" href="index.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> tigereye
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-tigereye">What is tigereye?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-using-pip">Installing using pip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-from-github-repository">Installing from github repository</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#simple-examples">Simple examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-simplest-tigereye-plot">The simplest tigereye plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#a-title-is-added">A title is added.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#labels-are-added-into-x-and-y-axes">Labels are added into x and y axes.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-is-generated-using-numpy">Data is generated using numpy.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#plot-is-generated-using-a-template">Plot is generated using a template .</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-is-read-from-a-local-file">Data is read from a local file.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-is-read-from-online">Data is read from online.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multi-page-pdf-file-is-generated">Multi-page PDF file is generated .</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#further-reading">Further reading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#acknowledgment">Acknowledgment</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uguide.html">User's guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dguide.html">Developer's guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">tigereye</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>tigereye</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/readme.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tigereye">
+<h1>tigereye<a class="headerlink" href="#tigereye" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/tigereye"><img alt="https://img.shields.io/pypi/v/tigereye.svg" src="https://img.shields.io/pypi/v/tigereye.svg" /></a>
+<a class="reference external image-reference" href="https://travis-ci.org/grnydawn/tigereye"><img alt="https://img.shields.io/travis/grnydawn/tigereye.svg" src="https://img.shields.io/travis/grnydawn/tigereye.svg" /></a>
+<a class="reference external image-reference" href="https://tigereye.readthedocs.io/en/latest/?badge=latest"><img alt="Documentation Status" src="https://readthedocs.org/projects/tigereye/badge/?version=latest" /></a>
+<p>A reusable data-manipulation and plotting tool</p>
+<ul class="simple">
+<li>Free software: MIT license</li>
+<li>Documentation: <a class="reference external" href="https://tigereye.readthedocs.io">https://tigereye.readthedocs.io</a>. (T.B.D.)</li>
+</ul>
+<div class="section" id="what-is-tigereye">
+<h2>What is tigereye?<a class="headerlink" href="#what-is-tigereye" title="Permalink to this headline">¶</a></h2>
+<p>Tigereye is a portable command-line utility for creating plots from various sources of data.  It advocates incremental plotting that you can immediately see the effect of changes made in command-line. Until satisfied, you can generate plots through a very quick cycle of “change-run-see”. In addition, tigereye can read data of various formats, compactly modify them on command-line, and output modified data as the form of plots as well as texts. Tigereye also supports importing both of plots and data that could be created independently.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h3>
+<p>Tigereye extensively uses <a class="reference external" href="https://matplotlib.org/">matplotlib</a> and <a class="reference external" href="http://www.numpy.org/">numpy</a>. Before using tigereye, the two Python package needs to be installed. You can check if the packages are available locally on your computer by running following commands. You should see three numbers similar to “2.2.2”. If not, please visit corresponding package sites to know how to install the packages.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python -c &quot;import numpy; print(numpy.__version__)&quot;
+$ python -c &quot;import matplotlib; print(matplotlib.__version__)&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-using-pip">
+<h3>Installing using pip<a class="headerlink" href="#installing-using-pip" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ pip install tigereye
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-from-github-repository">
+<h3>Installing from github repository<a class="headerlink" href="#installing-from-github-repository" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/grnydawn/tigereye.git
+$ cd tigereye
+$ python setup.py install
+$ tigereye --version
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="simple-examples">
+<h2>Simple examples<a class="headerlink" href="#simple-examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="the-simplest-tigereye-plot">
+<h3>The simplest tigereye plot<a class="headerlink" href="#the-simplest-tigereye-plot" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ tigereye &quot;[1,2,4]&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="a-title-is-added">
+<h3>A title is added.<a class="headerlink" href="#a-title-is-added" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ tigereye &quot;[1,2,4]&quot; \
+    -t &quot;&#39;Sample Plot&#39;, fontsize=16&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="labels-are-added-into-x-and-y-axes">
+<h3>Labels are added into x and y axes.<a class="headerlink" href="#labels-are-added-into-x-and-y-axes" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ tigereye &quot;[1,2,4]&quot; \
+    -t &quot;&#39;Sample Plot&#39;, fontsize=16&quot; \
+    -x &quot;label=&#39;X&#39;, fontsize=12&quot; \
+    -y &quot;label=&#39;Y&#39;, fontsize=12&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-is-generated-using-numpy">
+<h3>Data is generated using numpy.<a class="headerlink" href="#data-is-generated-using-numpy" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ tigereye \
+    -v &quot;varx=numpy.linspace(0, 2*numpy.pi)&quot; \
+    -v &quot;vary=numpy.sin(varx)&quot; \
+    -t &quot;&#39;Sample Plot&#39;, fontsize=16&quot; \
+    -x &quot;label=&#39;X&#39;, fontsize=12&quot; \
+    -y &quot;label=&#39;Y&#39;, fontsize=12&quot; \
+    -p &quot;plot, varx, vary, label=&#39;line1&#39;&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="plot-is-generated-using-a-template">
+<h3>Plot is generated using a template .<a class="headerlink" href="#plot-is-generated-using-a-template" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ tigereye \
+    -i https://raw.githubusercontent.com/grnydawn/tigereye/master/template/basic/sample1.tgr \
+    -t &quot;&#39;My Plot&#39;&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-is-read-from-a-local-file">
+<h3>Data is read from a local file.<a class="headerlink" href="#data-is-read-from-a-local-file" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ echo $&#39;1,2,3\n4,5,6\n7,8,9&#39; &gt; simple.csv
+$ tigereye simple.csv \
+    --data-format &quot;numpytext, delimiter=&#39;,&#39;&quot; \
+    -v &quot;row0=d0[0,:]&quot; \
+    -v &quot;row1=d0[1,:]&quot; \
+    -v &quot;row2=d0[2,:]&quot; \
+    -t &quot;&#39;Sample Plot&#39;, fontsize=16&quot; \
+    -x &quot;label=&#39;X&#39;, fontsize=12&quot; \
+    -y &quot;label=&#39;Y&#39;, fontsize=12&quot; \
+    -p &quot;plot, row0, row2, label=&#39;line-1&#39;&quot; \
+    -p &quot;bar, row0, row1, width= 0.5, label=&#39;bar-1&#39;&quot; \
+    -g \
+    -l
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-is-read-from-online">
+<h3>Data is read from online.<a class="headerlink" href="#data-is-read-from-online" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ tigereye https://raw.githubusercontent.com/grnydawn/tigereye/master/data/simple.csv \
+    --data-format &quot;numpytext, delimiter=&#39;,&#39;&quot; \
+    -v &quot;row0=d0[0,:]&quot; \
+    -v &quot;row1=d0[1,:]&quot; \
+    -v &quot;row2=d0[2,:]&quot; \
+    -t &quot;&#39;Sample Plot&#39;, fontsize=16&quot; \
+    -x &quot;label=&#39;X&#39;, fontsize=12&quot; \
+    -y &quot;label=&#39;Y&#39;, fontsize=12&quot; \
+    -p &quot;plot, row0, row2, label=&#39;line-1&#39;&quot; \
+    -p &quot;bar, row0, row1, width= 0.5, label=&#39;bar-1&#39;&quot; \
+    -g \
+    -l
+</pre></div>
+</div>
+</div>
+<div class="section" id="multi-page-pdf-file-is-generated">
+<h3>Multi-page PDF file is generated .<a class="headerlink" href="#multi-page-pdf-file-is-generated" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ tigereye https://raw.githubusercontent.com/grnydawn/tigereye/master/data/simple.csv \
+    --data-format &quot;numpytext, delimiter=&#39;,&#39;&quot; \
+    -t &quot;&#39;Sample Plot&#39;, fontsize=16&quot; \
+    -x &quot;label=&#39;X&#39;, fontsize=12&quot; \
+    -y &quot;label=&#39;Y&#39;, fontsize=12&quot; \
+    --pages &quot;len(d0), page_names=[&#39;Page-%d&#39;%n for n in range(len(d0))], pdf_merge=True&quot; \
+    -p &quot;plot, numpy.arange(len(d0)), d0[page_num, :], label=&#39;line-%d&#39;%page_num&quot; \
+    -t &quot;page_names[page_num]&quot; \
+    -s &quot;&#39;sample.pdf&#39;&quot; \
+    --noshow \
+    -g \
+    -l
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>T.B.D.</div></blockquote>
+</div>
+<div class="section" id="acknowledgment">
+<h2>Acknowledgment<a class="headerlink" href="#acknowledgment" title="Permalink to this headline">¶</a></h2>
+<p>Tigereye extensively uses <a class="reference external" href="https://matplotlib.org/">matplotlib</a> and <a class="reference external" href="http://www.numpy.org/">numpy</a>. The packages have vastly accepted by community with reasons. Tigereye could be considered as a wrapper of several well-known Python packages including <a class="reference external" href="https://matplotlib.org/">matplotlib</a> and <a class="reference external" href="http://www.numpy.org/">numpy</a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to tigereye’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Youngsung Kim.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.2',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
